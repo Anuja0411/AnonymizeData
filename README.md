@@ -17,12 +17,13 @@ Apache Spark framework is used to speed up the distributed processing of large d
 * Jupyter Notebook 
 
 ## Dataset used
-> The data used for demonstrating distributing processing in the project is huge and could not be uploaded on Github. Download the data using the link provided below and place the unziped file in the "Dataset" folder.
+> The data used for demonstrating distributing processing in the project is huge and could not be uploaded on Github. Download the data using the link provided below , rename it as "Records5m.csv" and place the unziped file in the "Dataset" folder.
 
 Here are the details of the dataset used in the project :
 * Data Size - 5 million (~ 1.4 GB)
 * Download Link - http://eforexcel.com/wp/downloads-16-sample-csv-files-data-sets-for-testing/
 * Select the 5m Records zip file (614 MB)
+* Unzip the file , rename it as "Records5m.csv" and place it inside "Dataset" folder.
 
 
 ## Code Execution
