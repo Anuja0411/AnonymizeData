@@ -27,6 +27,6 @@ Here are the details of the dataset used in the project :
 
 ## Code Execution
 
-Install Jupyter Notebook, import the .ipynb file  and exceute all the cells in the code by selecting:
+Install Jupyter Notebook, import the .ipynb file  and execute all the cells in the code by selecting:
 
 `Kernel -> Restart & Run All `
