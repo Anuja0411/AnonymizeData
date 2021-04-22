@@ -1,12 +1,12 @@
 # Anonymize large data using Apache Spark
 
-> Anonymity of data is acheived by generating fake data and replacing it with the original data. 
+Anonymity of data is acheived by generating fake data and replacing it with the original data. 
 
 For example - If the original First Name is "Anuja", it will be replaced by "Anna" . 
 
->"Faker" open source library is used to generate the required fake data.   
+"Faker" open source library is used to generate the required fake data.   
 
->Apache Spark framework is used to speed up the distributed processing of large dataset.
+Apache Spark framework is used to speed up the distributed processing of large dataset.
 
 ## Libraries used
 
