@@ -25,6 +25,17 @@ Here are the details of the dataset used in the project :
 * Select the 5m Records zip file (614 MB)
 * Unzip the file , rename it as "Records5m.csv" and place it inside "Dataset" folder.
 
+## Project Folder Structure
+
+Anonymize2GB.ipynb --> Jupter Notebook inline code explanation
+
+/PythonFiles       --> Pyspark Project in Object Oriented format for Anonymizing Data
+
+/PythonFiles/AnonymizeDataset.py --->  Pyspark Program to anonymize data
+
+/PythonFiles/AnonymizeDataTests.py ---> Pyspark Unit Testing (TDD)
+
+/PythonFiles/spark_dependency.py ---> Pyspark helper functions
 
 ## Code Execution
 
