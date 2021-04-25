@@ -23,15 +23,21 @@ class AnonymizeData():
     def __init__(self):
         # start Spark application and get Sparkcontext anbd sqlcontext
         self.sc, self.sqlc = spark.start_spark()
-        self.filepath = './Dataset/Records5m.csv'
-        self.req_cols = ['Emp ID','First Name', 'Last Name','Date of Birth','Address','Gender']
-        self.anon_cols = ['First Name', 'Last Name','Address']
+
+        # Set class object attributes 
+        self.filepath = './Dataset/Records5m.csv' # Path to the 2GB data
+        self.req_cols = ['Emp ID','First Name', 'Last Name','Date of Birth','Address','Gender'] # Required Columns
+        self.anon_cols = ['First Name', 'Last Name','Address'] # Columns that need to be anonymized
         
         
 
     def main(self):
-        """Main  script definition.
-        :return: None
+        """ Purpose : Main  script definition.
+          - 1. Prepare the data that has to be anonymized
+          - 2. Anonymize the data
+          - 3. Stop spark 
+        Argument: Class Object
+        Output: None
         """
         
         
@@ -46,6 +52,11 @@ class AnonymizeData():
 
 
     def read_data(self):
+        ''' Purpose : Read the data from local
+            Argument : Class Object
+            Output : Returns the dataframe or None
+        
+        '''
         df = self.sqlc.read.csv(self.filepath, header = True)
         nrows = df.count()
         if nrows > 0:
@@ -56,11 +67,21 @@ class AnonymizeData():
             return None
     
     def generateAddressColumn(self):
+        ''' Purpose : Create a new "Address" column by combining Place, Country, City, State and Zip
+            Argument : Class Object
+            Output : Returns the dataframe with new Column
+        
+        '''
         self.org_df = self.org_df.withColumn('Address', concat(col('Place Name'), lit(', '), col('County'),
                                  lit(', '),  col('City'), lit(', '),col('State'),lit(', '),col('Zip')))
         return self.org_df
     
     def checkRequiredCols(self):
+        ''' Purpose : Check if all the required columns are present in the data
+            Argument : Class Object
+            Output : Returns "True" is present else "False"
+        
+        '''
         print ("Checking if all required columns are present")
         
         if all(col in self.org_df.columns for col in self.req_cols):
@@ -71,6 +92,11 @@ class AnonymizeData():
         
 
     def filternullrows(self):
+        ''' Purpose : Filter out rows that contain "Null" in any of the required column
+            Argument : Class Object
+            Output : Returns the filtered dataframe
+        
+        '''
         for col in self.req_cols:
             self.org_df = self.org_df.filter(self.org_df[col].isNotNull())
         if self.org_df.count() > 0:
@@ -79,12 +105,22 @@ class AnonymizeData():
             return self.selc_df.count()
         
     def checkdatatypes(self):
+        ''' Purpose : Check the datatype of all required columns 
+            Argument : Class Object
+            Output : Returns "True" is all columns are of "String" datatype
+        
+        '''
         for dt in self.selc_df.dtypes:
             if dt[1] == 'string':
                 return True
         print (self.selc_df.dtypes)
 
     def checkduplicates(self):
+        ''' Purpose : Drop duplicate rows
+            Argument : Class Object
+            Output : Returns the cleaned dataframe without duplicates
+        
+        '''
         
         nrows = self.org_df.count()
         self.org_df = self.org_df.dropDuplicates()
@@ -96,6 +132,11 @@ class AnonymizeData():
 
     
     def prepare_data(self):
+        ''' Purpose : Prepare the data by performing data cleansing and ETL 
+            Argument : Class Object
+            Output : None
+        
+        '''
         if self.generateAddressColumn():
             print ("Combining columns like Place, country, city, state and zip to generate Address column")
 
@@ -111,6 +152,12 @@ class AnonymizeData():
             print ("Data Type check complete")
 
     def anonymize(self):
+        ''' Purpose : Anonymize the cleansed data by replacing the original data with fake data. For "First Name" and
+                    "Last Name" the fake name that is generated is gender specific
+            Argument : Class Object
+            Output : Returns the dataframe with anonymized data
+        
+        '''
         faker  = Factory.create()
         faker  = Factory.create()
         anonymize_male = udf(lambda n : faker.first_name_male(), StringType())

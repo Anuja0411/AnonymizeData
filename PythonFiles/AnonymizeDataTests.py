@@ -14,12 +14,15 @@ spark_sql_ctx = ''
 
 class AnonyzizeDataTests(unittest.TestCase):
     
-    #def __init__(self, obj):
-        
     
     
     def test_CheckFileExists(self):
-        
+        '''
+            Test Description: Test if the local data file exists 
+            Test Input : Filepath
+            Test Output: "True" if exists , "False" otherwise
+
+        '''
         AnonymizeData.__init__(self)
         global filepath
         filepath = self.filepath
@@ -38,20 +41,29 @@ class AnonyzizeDataTests(unittest.TestCase):
         
 
     def test_DataExistsInFile(self):
-        #AnonymizeData.__init__(self)
+        '''
+            Test Description: Test if the data  exists in the file
+            Test Input : Filepath
+            Test Output: "None" if does not exist, "Datframe" otherwise
+
+        '''
         self.filepath = filepath
         self.sqlc = spark_sql_ctx
         print ("_____________________________________________")
         print ("Testing if data exists in  "+self.filepath)
-        #global filepath 
-        #filepath = self.filepath
         print (filepath)
         global data
         data = AnonymizeData.read_data(self)
         self.assertIsNotNone(data)
-        #stop_spark(self.sc)
+        
     
     def test_GenerateAddress(self):
+        '''
+            Test Description: Test if the class function "generateAddressColumn" generates address
+            Test Input : Sample Test dataframe
+            Test Output: Equality Comparison between the expected and actual ouput
+
+        '''
         print ("_____________________________________________")
         print ("testing adrress generation by combining Place, country, city, state and zip")
         test_df = pd.DataFrame([['Armadale','Australia','Melbourne','Victoria','3143']], columns=['Place Name', 'County', 'City', 'State', 'Zip'])
@@ -64,7 +76,12 @@ class AnonyzizeDataTests(unittest.TestCase):
         
     
     def test_ifAllRequiredColsExist(self):
-        
+        '''
+            Test Description: Test the class function "checkRequiredCols" 
+            Test Input : Sample Test dataframe
+            Test Output: "True" if exists
+
+        '''
         print ("_____________________________________________")
         print ("Testing if all required columns - First Name, Last name, Date Of Birth and Address exist")
         test_df = pd.DataFrame([['444','Anuja','Jain','31/12/2000','Victoria,3144','F']], columns=['Emp ID','First Name', 'Last Name', 'Date of Birth', 'Address','Gender'])
@@ -72,10 +89,15 @@ class AnonyzizeDataTests(unittest.TestCase):
         self.org_df = spark_test_df
         self.req_cols = required_cols
         self.assertTrue(AnonymizeData.checkRequiredCols(self))
-        #stop_spark(self.sc)
+        
     
     def test_ifDuplicatesExist(self):
-        
+        '''
+            Test Description: Test the class function "checkduplicates" 
+            Test Input : Sample Test dataframe
+            Test Output: Equality Comparison between the expected and actual ouput
+
+        '''
         print ("_____________________________________________")
         print ("Testing if duplicates exist")
         test_df = pd.DataFrame([['444','Anuja','Jain','31/12/2000','Victoria,3144','F'],['444','Anuja','Jain','31/12/2000','Victoria,3144','F']], columns=['Emp ID','First Name', 'Last Name', 'Date of Birth', 'Address','Gender'])
@@ -88,6 +110,12 @@ class AnonyzizeDataTests(unittest.TestCase):
       
     
     def test_ifNullValuesExistInRequiredCols(self):
+        '''
+            Test Description: Test the class function "filternullrows" 
+            Test Input : Sample Test dataframe
+            Test Output: Equality Comparison between the expected and actual ouput
+
+        '''
         print ("_____________________________________________")
         print ("Testing for null values")
         test_df = pd.DataFrame([['333','Anuja',None,'31/12/2000','Victoria,3144','F'],['444','Anna',None,'31/12/2001','Queensland,3144','F'],['444','Elise','Jordan','31/12/1990','Sydney,3144','F']], columns=['Emp ID','First Name', 'Last Name', 'Date of Birth', 'Address','Gender'])
@@ -98,7 +126,12 @@ class AnonyzizeDataTests(unittest.TestCase):
         self.assertEqual(final_cnt_after_null_drop,1)
     
     def test_ifTheDataTypesAreCorrect(self):
-        
+         '''
+            Test Description: Test the class function "checkdatatypes" 
+            Test Input : Sample Test dataframe
+            Test Output: "True" if correct
+
+        '''
         print ("_____________________________________________")
         print ("Testing if datatypes are  correct (all are string)")
         test_df = pd.DataFrame([['444','Anuja','Jain','31/12/2000','Victoria,3144','F'],['445','Anna','Jordan','30/12/2000','Victoria,3154','F']], columns=['Emp ID','First Name', 'Last Name', 'Date of Birth', 'Address','Gender'])
@@ -107,9 +140,15 @@ class AnonyzizeDataTests(unittest.TestCase):
         self.assertTrue(AnonymizeData.checkdatatypes(self))
 
     def test_IfAnonymizedDataIsNotSameAsOrginal(self):
+        '''
+            Test Description: Test the class function "anonymize" 
+            Test Input : Sample Test dataframe
+            Test Output: Check if The Anonymized data is different than the original data
+
+        '''
         print ("___________________________________________________")
         print ("Testing if the anonymization is working correctly (Fake and original values are different)")
-        test_df = pd.DataFrame([['444','Hermmoine','Granger','31/12/2000','Melbourne,3144','F']], columns=['Emp ID','First Name', 'Last Name', 'Date of Birth', 'Address','Gender'])
+        test_df = pd.DataFrame([['444','Hermione','Granger','31/12/2000','Melbourne,3144','F']], columns=['Emp ID','First Name', 'Last Name', 'Date of Birth', 'Address','Gender'])
         spark_test_df = spark_sql_ctx.createDataFrame(test_df)
         self.selc_df = spark_test_df
         anonymized_data = AnonymizeData.anonymize(self)
