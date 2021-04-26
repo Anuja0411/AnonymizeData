@@ -39,6 +39,22 @@ Anonymize2GB.ipynb --> Jupter Notebook inline code explanation
 
 ## Code Execution
 
+### Execute Python Script
+
+
+After downloading and placing the data in "./Dataset" folder , run the following command to run the main file-
+
+`python3  PythonFiles/AnonymizeDataset.py`
+
+
+Run the command below to run the test script as per TDD approach
+
+`python3  PythonFiles/AnonymizeDatasetTests.py`
+
+
+
+### Exceute Jupyter Notebook
+
 Install Jupyter Notebook, import the .ipynb file  and execute all the cells in the code by selecting:
 
 `Kernel -> Restart & Run All `

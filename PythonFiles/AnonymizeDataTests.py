@@ -126,7 +126,7 @@ class AnonyzizeDataTests(unittest.TestCase):
         self.assertEqual(final_cnt_after_null_drop,1)
     
     def test_ifTheDataTypesAreCorrect(self):
-         '''
+        '''
             Test Description: Test the class function "checkdatatypes" 
             Test Input : Sample Test dataframe
             Test Output: "True" if correct
